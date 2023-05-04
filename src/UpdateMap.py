@@ -109,7 +109,9 @@ groups = [
         'title': t,
     } for t, i in group_map.items()
 ]
-groups
+
+# # Remove Unnecessary Columns
+df.drop(columns=['group_name', 'id', 'marker_color'], inplace=True)
 
 
 # # Prepare `geojson`
@@ -122,7 +124,6 @@ SMALL_ICON_ZOOM_LEVEL = 6
 geo_json = json.loads(gdf.to_json(drop_id=True))
 geo_json['properties'] = {'simplify': SMALL_ICON_ZOOM_LEVEL}
 geo_json['groups'] = groups
-geo_json
 
 
 # # Update Map
