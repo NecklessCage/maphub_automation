@@ -10,18 +10,13 @@ import config
 
 
 # # Load Data
-# 
-
-
+#
 df = pd.read_excel('../data/data.xlsx', sheet_name='maphub')
 df.head()
 
 
 # # Upload Images and Icons
-# 
-
-
-# Upload Images and Icons
+#
 def upload_image_marker(kind, file_path):
     file_path = Path(file_path)
     # path where we store the info JSON
@@ -71,7 +66,7 @@ for file_path in tqdm(glob('../icons/*')):
 
 
 # # Prepare Image and Icon Columns
-# 
+#
 
 
 key_map = {
@@ -80,13 +75,14 @@ key_map = {
     'width': 'w'
 }
 
+
 def load_json(file_name, type):
     try:
         match type:
             case 'image':
                 with open(f'../img/{file_name}.json', 'r') as f:
-                    return {key_map[k] if k in key_map else k:v
-                        for k,v in json.load(f).items() if v is not None}
+                    return {key_map[k] if k in key_map else k: v
+                            for k, v in json.load(f).items() if v is not None}
             case 'icon':
                 with open(f'../icons/{file_name}.json', 'r') as f:
                     return json.load(f)['marker_id']
@@ -103,9 +99,6 @@ df.head()
 
 
 # # Prepare Group Data
-# 
-
-
 group_names = df.group_name.unique()
 group_map = {k: i for i, k in enumerate(df.group_name.unique(), start=1001)}
 print(group_map)
@@ -120,9 +113,6 @@ groups
 
 
 # # Prepare `geojson`
-# 
-
-
 gdf = gp.GeoDataFrame(df, geometry=gp.points_from_xy(
     df.longitude, df.latitude))  # Note the order is lnglat
 gdf = gdf.drop(columns=['longitude', 'latitude'])
@@ -136,20 +126,14 @@ geo_json
 
 
 # # Update Map
-# 
-
-
 def update_map(geo_json, map_id):
     url = 'https://maphub.net/api/1/map/update'
     args = {
         'map_id': map_id,
         'geojson': geo_json,
-        'title': 'Test Map for Automation Script',
+        'title': config.MAP_TITLE,
         'basemap': 'mapbox-streets_satellite',
-        'description': (
-            'Sample map for MapHub API tutorial:\n'
-            'by Ted'
-        ),
+        'description': config.MAP_DESCRIPTION,
         'visibility': 'public',
     }
     headers = {
@@ -167,12 +151,11 @@ def update_map(geo_json, map_id):
     return data
 
 
-confirmation = input(f'Are you sure you want to update the ENTIRE map on MapHub, ID={config.MAPHUB_MAP_ID}? YES/N: ')
+confirmation = input(
+    f'Are you sure you want to update the ENTIRE map on MapHub, ID={config.MAPHUB_MAP_ID}? YES/N: ')
 print(f'{confirmation = }')
-if confirmation=='YES':
+if confirmation == 'YES':
     print('Updating Map...')
     res = update_map(geo_json, config.MAPHUB_MAP_ID)
 else:
     print('Update aborted.')
-
-

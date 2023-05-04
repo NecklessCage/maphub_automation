@@ -1,6 +1,6 @@
 # MapHub Map Update Automation
 
-This project requires Python 3.8+ and the following modules:
+This project requires Python 3.10+ and the following modules:
 ```
 tqdm
 pandas
@@ -26,7 +26,8 @@ Make sure you have installed the modules first in your Python environment.
 
 1. Make sure you're in the project folder `maphub_automation`.
 2. Open a terminal/PowerShell, run the Python script `src/GetMapID.py` by typing `python src/GetMapID.py`
-3. You will be asked to enter the map title that you have given when you created a new map above.
+3. You will be asked to enter the map title that you have given when you created a new map above. You can find the map title as shown in the image below, highlighted in orange:
+![](MapTitle.png)
 4. Once the execution is complete, the script will print out the Map ID which is a 6 digit number.
 5. Copy this number to `src/config.py` file. It should look like this: `MAPHUB_MAP_ID = r'YOUR MAP ID HERE'`. Note that this should be on its own new line since you will already have a line for `MAPHUB_API_KEY`.
 
@@ -45,6 +46,22 @@ Make sure you have installed the modules first in your Python environment.
 
 1. If you wish to use custom icons, save all icons in `icons/` folder and populate `icon_name` column of `data/data.xlsx` with the file name of the icon file you wish to associate. 
 2. Do NOT include extensions in the column.
+
+## Set up Map Attributes
+
+1. Open `src/config.py` file. You should already have 2 lines like this:
+```python
+MAPHUB_API_KEY = r'YOUR API KEY'
+MAPHUB_MAP_ID = r'YOUR MAP ID'
+```
+2. Add these 3 new lines:
+``` python
+MAP_TITLE = r'YOUR MAP TITLE'
+MAP_DESCRIPTION = '''YOUR MAP DESCRIPTION IN MARKDOWN'''
+MAP_VISIBILITY = 'Public or Private'
+```
+3. For Map visibility, choose either `Public` or `Private`. 
+4. Add the title and description, and save the file.
 
 # Updating the Map
 
