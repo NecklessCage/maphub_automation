@@ -20,7 +20,7 @@ Make sure you have installed the modules first in your Python environment.
 
 1. Go to maphub.net, login with a Business account (or another plan that gives API access)
 2. Go to [MapHub API Key page](https://docs.maphub.net/api/index.html), and follow the instructions to get the API Key.
-3. Open `src/config.py` and add the API key to MAPHUB_API_KEY. It should look like this: `MAPHUB_API_KEY = r'YOUR API KEY HERE'`.
+3. Create a new `config.py` file in `src/`. Open `src/config.py` and add the API key to MAPHUB_API_KEY. It should look like this: `MAPHUB_API_KEY = r'YOUR API KEY HERE'`.
 
 ## Get Map ID
 
@@ -28,7 +28,7 @@ Make sure you have installed the modules first in your Python environment.
 2. Open a terminal/PowerShell, run the Python script `src/GetMapID.py` by typing `python src/GetMapID.py`
 3. You will be asked to enter the map title that you have given when you created a new map above.
 4. Once the execution is complete, the script will print out the Map ID which is a 6 digit number.
-5. Copy this number to `src/config.py` file. It should look like this: `MAPHUB_MAP_ID = r'YOUR MAP ID HERE'`.
+5. Copy this number to `src/config.py` file. It should look like this: `MAPHUB_MAP_ID = r'YOUR MAP ID HERE'`. Note that this should be on its own new line since you will already have a line for `MAPHUB_API_KEY`.
 
 ## Set up Data Source
 
