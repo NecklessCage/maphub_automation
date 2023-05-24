@@ -99,6 +99,7 @@ df.head()
 
 
 # # Prepare Group Data
+df.group_name.fillna('Unknown', inplace=True)
 group_names = df.group_name.unique()
 group_map = {k: i for i, k in enumerate(df.group_name.unique(), start=1001)}
 print(group_map)
@@ -109,6 +110,43 @@ groups = [
         'title': t,
     } for t, i in group_map.items()
 ]
+
+
+def get_hex_gradient(list_of_numbers):
+    '''
+    Example input
+    list_of_numbers = [1,3,4,5,9,20]
+    '''
+    from matplotlib import colors, colormaps
+    import numpy as np
+    list_of_numbers = pd.Series(list_of_numbers)
+    # Unknowns
+    UNKNOWN = '#828282'
+    # Get the indices of 'Unknowns'
+    idx = np.where(list_of_numbers == 'Unknown')[0]
+    # Temporarily replace 'Unknown' with minimum value
+    # series.where replaces the value for the condition is NOT met
+    list_of_numbers = list_of_numbers.where(
+        list_of_numbers != 'Unknown',
+        list_of_numbers[list_of_numbers != 'Unknown'].min(),
+    )
+    # Normalise to our data range
+    norm = colors.Normalize(
+        vmin=list_of_numbers.min(),
+        vmax=list_of_numbers.max(),
+    )
+    # Pick the color scheme
+    cmap = colormaps['viridis_r']
+    # Map numbers to the color scheme and convert to hex code
+    colors = np.array([colors.rgb2hex(cmap(norm(i))) for i in list_of_numbers])
+    # Replace the 'Unknown' indices with UNKNOWN color
+    colors[idx] = UNKNOWN
+    return colors
+
+
+# Example usage
+color_column = 'Pits'
+df['marker-color'] = get_hex_gradient(df[color_column])
 
 # # Remove Unnecessary Columns
 df.drop(columns=['group_name', 'id', 'marker_color'], inplace=True)
